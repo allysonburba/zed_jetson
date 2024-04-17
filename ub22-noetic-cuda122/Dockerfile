@@ -1,4 +1,4 @@
-FROM nvidia/cuda:12.2-base-ubuntu22.04
+FROM nvidia/cuda:12.2.2-base-ubuntu22.04
 SHELL ["/bin/bash", "-c"]
 
 ENV CMAKE_BUILD_TYPE=Release
