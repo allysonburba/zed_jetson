@@ -3,12 +3,15 @@ SHELL ["/bin/bash", "-c"]
 
 ENV CMAKE_BUILD_TYPE=Release
 
-# Install necessary packages
+# Install necessary packages including lsb-release beforehand
 RUN apt update && DEBIAN_FRONTEND=noninteractive apt install -y \
     curl \
     gnupg \
     lsb-release \
     build-essential  # Ensure build tools are available
+
+# Verify lsb_release output manually or set it explicitly
+RUN echo $(lsb_release -sc)
 
 # Add the ROS repository and install ROS Noetic
 RUN echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list && \
