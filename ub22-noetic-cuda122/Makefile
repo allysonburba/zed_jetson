@@ -1,5 +1,5 @@
 build:
-	docker build -t jetson2204-noetic
+	docker build -t jetson2204-noetic .
 #	 docker build -t personalroboticsimperial/prl:jetson2204-noetic . 
 
 run:
