@@ -1,29 +1,29 @@
 FROM nvidia/cuda:12.2.2-base-ubuntu22.04
+
 SHELL ["/bin/bash", "-c"]
 
-ENV CMAKE_BUILD_TYPE=Release
+RUN rm -Rf /etc/apt/sources.list.d/cuda.list
 
-# Install necessary packages including lsb-release beforehand
-RUN apt update && DEBIAN_FRONTEND=noninteractive apt install -y \
-    curl \
-    gnupg \
-    lsb-release \
-    build-essential  # Ensure build tools are available
+RUN apt-get update -y && apt-get install -y git vim
 
-# Verify lsb_release output manually or set it explicitly
-RUN echo $(lsb_release -sc)
+####################################################################################################
+########################################### ROS NOETIC #############################################
+####################################################################################################
 
-# Add the ROS repository and install ROS Noetic
-RUN echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list && \
+RUN echo "deb http://packages.ros.org/ros/ubuntu focal main" > /etc/apt/sources.list.d/ros-latest.list && \
     curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add - && \
-    apt update && \
-    DEBIAN_FRONTEND=noninteractive apt install -y ros-noetic-ros-base
+    sed -i 's=deb https://repo.download.nvidia.com/jetson/common r35.1 main=# deb https://repo.download.nvidia.com/jetson/common r35.1 main=' /etc/apt/sources.list &&\
+    apt-get update -y && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y ros-noetic-desktop
 
-# Install additional ROS and development tools
-RUN DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    python3-rosdep \
+    python3-rosinstall \
+    python3-rosinstall-generator \
+    python3-wstool \
     python3-catkin-tools \
-    python3-rosdep && \
+    build-essential &&\
     rosdep init && \
     rosdep update
 
-CMD ["bash"]
+CMD bash
