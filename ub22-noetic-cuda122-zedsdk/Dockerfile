@@ -27,10 +27,10 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
     python3-rosinstall-generator \
     python3-wstool \
     python3-catkin-tools \
+    ros-noetic-catkin \
     build-essential &&\
     rosdep init && \
     rosdep update
-
 
 RUN python3 -m pip install --upgrade pip
 
@@ -54,24 +54,31 @@ RUN apt-get update -y && apt-get install --no-install-recommends python3-pip -y 
     python3 -m pip install numpy opencv-python *.whl && \
     rm *.whl
 
-
 WORKDIR /root/ros_ws
 
-
-RUN mkdir -p /root/ros_ws/src/ && source /opt/ros/noetic/setup.bash && catkin init && catkin build
+# Ensure the ROS environment is sourced properly
+RUN mkdir -p /root/ros_ws/src && \
+    source /opt/ros/noetic/setup.bash && \
+    catkin init
 
 RUN cd src && git clone --recurse-submodules -j8 https://github.com/stereolabs/zed-ros-wrapper.git
-RUN apt update && source devel/setup.bash && DEBIAN_FRONTEND=noninteractive rosdep install --from-paths src --ignore-src -r -y 
+
+RUN apt update && \
+    source /opt/ros/noetic/setup.bash && \
+    rosdep install --from-paths src --ignore-src -r -y 
+
 RUN python3 -m pip install -U pip && python3 -m pip install opencv-contrib-python
 
 RUN git clone https://github.com/stereolabs/zed-ros-examples.git
-RUN apt update && DEBIAN_FRONTEND=noninteractive rosdep install --from-paths . --ignore-src -r -y
-RUN catkin build -DCMAKE_BUILD_TYPE=Release
+RUN apt update && \
+    source /opt/ros/noetic/setup.bash && \
+    rosdep install --from-paths . --ignore-src -r -y
 
+RUN source /opt/ros/noetic/setup.bash && \
+    catkin build -DCMAKE_BUILD_TYPE=Release
 
-RUN source devel/setup.bash && \
+RUN source /root/ros_ws/devel/setup.bash && \
     catkin config --cmake-args -DCMAKE_CXX_FLAGS="-Wl,--allow-shlib-undefined" && \
     catkin build zed_wrapper
 
-
-CMD bash
+CMD ["bash"]
