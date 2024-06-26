@@ -4,7 +4,7 @@ SHELL ["/bin/bash", "-c"]
 
 RUN rm -Rf /etc/apt/sources.list.d/cuda.list
 
-RUN apt-get update -y && apt-get install -y git vim
+RUN apt-get update -y && apt-get install -y git vim curl
 
 ####################################################################################################
 ########################################### ROS NOETIC #############################################
