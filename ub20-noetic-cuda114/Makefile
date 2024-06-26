@@ -1,5 +1,5 @@
 build:
-	docker build -t jetson2004-noetic .
+	docker build -t personalroboticsimperial/prl:jetson2004-cuda114-noetic . 
 
 run:
 	@docker container stop jetson20noetic || true && docker container rm jetson20noetic || true
@@ -14,9 +14,8 @@ run:
 		-v "/tmp/.X11-unix:/tmp/.X11-unix:rw" \
 		--network host \
 		--privileged \
-		--runtime=nvidia \
-		--name jetson24noetic \
-		jetson2004-noetic
+		--name jetson20noetic \
+		personalroboticsimperial/prl:jetson2004-cuda114-noetic
 
 # push:
-# 	docker push personalroboticsimperial/prl:jetson2204-noetic
+# 	docker push personalroboticsimperial/prl:jetson2004-cuda114-noetic
