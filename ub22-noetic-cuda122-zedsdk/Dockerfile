@@ -19,7 +19,7 @@ COPY .nv_tegra_release /etc/nv_tegra_release
 
 RUN wget -q -O ZED_SDK_Jetson_40.run https://download.stereolabs.com/zedsdk/4.0/l4t35.4/jetsons
 RUN chmod +x ZED_SDK_Jetson_40.run && \
-    DEBIAN_FRONTEND=noninteractive ./ZED_SDK_Jetson_40.run -- silent && \
+    DEBIAN_FRONTEND=noninteractive ./ZED_SDK_Jetson_40.run --silent && \
     rm ZED_SDK_Jetson_40.run
 
 RUN python3 -m pip install cython numpy opencv-python pyopengl
