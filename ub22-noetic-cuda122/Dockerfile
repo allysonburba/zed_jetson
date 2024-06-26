@@ -1,13 +1,10 @@
-FROM nvcr.io/nvidia/l4t-base:r35.2.1
+FROM nvidia/cuda:12.2.2-base-ubuntu20.04
 
 SHELL ["/bin/bash", "-c"]
 
-RUN apt-get update -y && apt-get install -y \
-    git \
-    vim \
-    curl \
-    gnupg2 \
-    lsb-release
+RUN rm -Rf /etc/apt/sources.list.d/cuda.list
+
+RUN apt-get update -y && apt-get install -y git vim curl
 
 ####################################################################################################
 ########################################### ROS NOETIC #############################################
