@@ -10,17 +10,17 @@ RUN apt-get update -y && DEBIAN_FRONTEND=noninteractive apt-get install -y \
 RUN python3 -m pip install --upgrade pip
 
 ####################################################################################################
-########################################### ZED SDK 4.0 ############################################
+########################################### ZED SDK 4.1 ############################################
 ####################################################################################################
 
 WORKDIR /zed
 
 COPY .nv_tegra_release /etc/nv_tegra_release
 
-RUN wget -q -O ZED_SDK_Jetson_40.run https://download.stereolabs.com/zedsdk/4.0/l4t35.4/jetsons
-RUN chmod +x ZED_SDK_Jetson_40.run && \
-    DEBIAN_FRONTEND=noninteractive ./ZED_SDK_Jetson_40.run --silent && \
-    rm ZED_SDK_Jetson_40.run
+RUN wget -q -O ZED_SDK_Tegra_L4T36.3_v4.1.2.zstd.run https://download.stereolabs.com/zedsdk/4.1/l4t36.3/jetsons?_gl=1*bjjao4*_gcl_au*NTY2Nzk4MDI0LjE3MTk0MTEyNzA.
+RUN chmod +x ZED_SDK_Tegra_L4T36.3_v4.1.2.zstd.run && \
+    DEBIAN_FRONTEND=noninteractive ./ZED_SDK_Tegra_L4T36.3_v4.1.2.zstd.run -- silent && \
+    rm ZED_SDK_Tegra_L4T36.3_v4.1.2.zstd.run
 
 RUN python3 -m pip install cython numpy opencv-python pyopengl
 RUN apt-get update -y && apt-get install --no-install-recommends python3-pip -y && \
