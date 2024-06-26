@@ -2,11 +2,11 @@ FROM nvidia/cuda:12.2.2-base-ubuntu20.04
 
 SHELL ["/bin/bash", "-c"]
 
-RUN apt-get update -y && apt-get install -y \
-    git \
+RUN apt-get update -y && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     wget \
-    zstd \
-    python3-pip
+    zstd
+
+RUN python3 -m pip install --upgrade pip
 
 ####################################################################################################
 ########################################### ZED SDK 4.0 ############################################
@@ -27,8 +27,7 @@ RUN apt-get update -y && apt-get install --no-install-recommends python3-pip -y 
     python3 /usr/local/zed/get_python_api.py && \
     python3 -m pip install numpy opencv-python *.whl && \
     rm *.whl
-
-
+    
 WORKDIR /root/ros_ws
 
 
@@ -40,17 +39,12 @@ RUN python3 -m pip install -U pip && python3 -m pip install opencv-contrib-pytho
 
 RUN git clone https://github.com/stereolabs/zed-ros-examples.git
 RUN apt update && DEBIAN_FRONTEND=noninteractive rosdep install --from-paths . --ignore-src -r -y
+RUN catkin build -DCMAKE_BUILD_TYPE=Release
 
-# Set CUDA_TOOLKIT_ROOT_DIR before running catkin build
-ENV CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda
-
-# Use the ENV variable in the catkin build command
-RUN source /opt/ros/noetic/setup.bash && \
-    catkin config --cmake-args -DCMAKE_BUILD_TYPE=Release -DCUDA_TOOLKIT_ROOT_DIR=$CUDA_TOOLKIT_ROOT_DIR && \
-    catkin build
 
 RUN source devel/setup.bash && \
     catkin config --cmake-args -DCMAKE_CXX_FLAGS="-Wl,--allow-shlib-undefined" && \
     catkin build zed_wrapper
+
 
 CMD bash
