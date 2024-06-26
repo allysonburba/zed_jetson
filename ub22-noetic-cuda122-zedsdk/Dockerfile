@@ -4,7 +4,8 @@ SHELL ["/bin/bash", "-c"]
 
 RUN apt-get update -y && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     wget \
-    zstd
+    zstd \
+    python3-pip
 
 RUN python3 -m pip install --upgrade pip
 
@@ -27,7 +28,7 @@ RUN apt-get update -y && apt-get install --no-install-recommends python3-pip -y 
     python3 /usr/local/zed/get_python_api.py && \
     python3 -m pip install numpy opencv-python *.whl && \
     rm *.whl
-    
+
 WORKDIR /root/ros_ws
 
 
