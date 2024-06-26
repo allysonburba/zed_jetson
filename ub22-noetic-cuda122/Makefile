@@ -16,7 +16,7 @@ run:
 		--privileged \
 		--runtime=nvidia \
 		--name jetson24noetic \
-		allysonburba/prl:jetson2004-cuda122-noetic-zed40
+		allysonburba/prl:jetson2004-cuda122-noetic
 
 push:
-	docker push allysonburba/prl:jetson2004-cuda122-noetic-zed40
+	docker push allysonburba/prl:jetson2004-cuda122-noetic
