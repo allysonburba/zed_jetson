@@ -5,6 +5,7 @@ SHELL ["/bin/bash", "-c"]
 RUN apt-get update -y && apt-get install -y \
     git \
     wget \
+    zstd \
     python3-pip
 
 ####################################################################################################
