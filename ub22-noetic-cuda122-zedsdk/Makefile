@@ -1,6 +1,6 @@
 build:
 	@cp /etc/nv_tegra_release .nv_tegra_release
-	docker build -t jetson2004-cuda122-noetic-zed40:latest .
+	docker build -t allysonburba/prl:jetson2004-cuda122-noetic-zed40 .
 	@rm -Rf .nv_tegra_release
 
 run:
@@ -18,7 +18,7 @@ run:
 		--privileged \
 		--name jetson20noetic-zed40 \
 		--runtime=nvidia \
-		jetson2004-cuda122-noetic-zed40:latest
+		allysonburba/prl:jetson2004-cuda122-noetic-zed40
 
-# push:
-# 	docker push personalroboticsimperial/prl:jetson2004-cuda122-noetic-zed40
+push:
+	docker push allysonburba/prl:jetson2004-cuda122-noetic-zed40
