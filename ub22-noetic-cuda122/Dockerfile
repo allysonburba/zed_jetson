@@ -1,10 +1,13 @@
-FROM nvidia/cuda:12.2.2-base-ubuntu22.04
+FROM nvcr.io/nvidia/l4t-base:r35.2.1
 
 SHELL ["/bin/bash", "-c"]
 
-RUN rm -Rf /etc/apt/sources.list.d/cuda.list
-
-RUN apt-get update -y && apt-get install -y git vim curl
+RUN apt-get update -y && apt-get install -y \
+    git \
+    vim \
+    curl \
+    gnupg2 \
+    lsb-release
 
 ####################################################################################################
 ########################################### ROS NOETIC #############################################
@@ -12,7 +15,6 @@ RUN apt-get update -y && apt-get install -y git vim curl
 
 RUN echo "deb http://packages.ros.org/ros/ubuntu focal main" > /etc/apt/sources.list.d/ros-latest.list && \
     curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add - && \
-    sed -i 's=deb https://repo.download.nvidia.com/jetson/common r35.1 main=# deb https://repo.download.nvidia.com/jetson/common r35.1 main=' /etc/apt/sources.list &&\
     apt-get update -y && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y ros-noetic-desktop
 
@@ -26,4 +28,4 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
     rosdep init && \
     rosdep update
 
-CMD bash
+CMD ["bash"]
